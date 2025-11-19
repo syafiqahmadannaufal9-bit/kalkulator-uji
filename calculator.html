@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>calculator</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="calculator.css">
 </head>
 <body>
     <div class="main-container" id="mainContainer">
-        <div class="toolbar-toggle" id="toolbarToggle"></div> <!-- Tombol setting di samping kiri kalkulator -->
+        <div class="toolbar-toggle" >
+        <button id="toolbarToggle"><i class='bx bx-cog'></i></button>
+        </div> 
         <div class="toolbar" id="toolbar"> <!-- Toolbar hidden di samping kiri -->
             <button id="toggleBtn">Light Mode</button>
             <div class="size-buttons">
@@ -16,7 +19,7 @@
                 <button class="size-btn" data-scale="1.2">1.2x</button>
                 <button class="size-btn" data-scale="1.3">1.3x</button>
             </div>
-            <p class="description">Hallo evryone</p>
+            <p class="description">Hello everyone</p>
         </div>
         <div class="main-box" id="mainBox">
             <div class="display">
