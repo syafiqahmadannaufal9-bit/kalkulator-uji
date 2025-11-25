@@ -31,6 +31,12 @@ sizeButtons.forEach(btn => {
 // Toggle toolbar
 toolbarToggle.addEventListener('click', () => {
     toolbar.classList.toggle('open');
+
+     // Putar ikon
+    const icon = toolbarToggle.querySelector('i');
+    icon.classList.remove('spin'); 
+    void icon.offsetWidth;         
+    icon.classList.add('spin');
 });
 
 // Toggle dark/light mode
@@ -50,7 +56,7 @@ sizeButtons.forEach(btn => {
         sizeButtons.forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
         localStorage.setItem('calculatorScale', currentScale);
-    });
+    }); 
 });
 
 // Function to refresh history
