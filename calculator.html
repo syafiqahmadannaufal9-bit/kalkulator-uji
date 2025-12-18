@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,10 +8,16 @@
 </head>
 <body>
     <div class="main-container" id="mainContainer">
-        <div class="toolbar-toggle" >
-        <button id="toolbarToggle"><i class='bx bx-cog'></i></button>
-        </div> 
-        <div class="toolbar" id="toolbar"> <!-- Toolbar hidden di samping kiri -->
+        <div class="toggle">
+            <button class="toolbar-toggle" id="toolbarToggle">
+                <i class='bx bx-cog'></i>
+            </button>
+
+            <button id="togglehistory">
+                <i class='bx bx-history'></i>
+            </button>
+        </div>
+        <div class="toolbar" id="toolbar"> 
             <button id="toggleBtn">Light Mode</button>
             <div class="size-buttons">
                 <button class="size-btn" data-scale="1">1x</button>
@@ -28,17 +33,18 @@
             </div>
             <div class="container">
                 <div id="history">
-                    <div>
-                        <h3>Riwayat Kalkulasi <button id="refreshBtn" onclick="refreshHistory()">Refresh</button></h3>
+                    <div class="flex-history">
+                        <h4>Riwayat Kalkulasi </h4>
+                        <button id="refreshBtn" onclick="refreshHistory()"><i class='bx bx-refresh'></i></button>
                     </div>
                     <ul id="historyList"></ul>
                 </div>
                 
                 <div class="calculator" id="calculator">
-                    <div class="buttons">
+                    <div class="innercalculator">
                         <button class="C" onclick="clearDisplay()">C</button>
-                        <button class="button-calculator" onclick="append('%')">%</button>
-                        <button class="button-calculator" onclick="append('/')">÷</button>
+                        <button class="operator" onclick="append('%')">%</button>
+                        <button class="operator" onclick="append('/')">÷</button>
                         <button class="operator" onclick="append('*')">x</button>
 
                         <button class="button-calculator" onclick="append('7')">7</button>
@@ -56,12 +62,25 @@
                         <button class="button-calculator" onclick="append('3')">3</button>
                         <button class="backspace" onclick="backspace()">⌫</button>
 
-                        <button class="button-calculator" onclick="append('.')">.</button>
+                        <button class="operator" id="menutrigonometri">T</button>
                         <button class="button-calculator" onclick="append('0')">0</button>
+                        <button class="button-calculator" onclick="append('.')">.</button>
                         <button class="backspace" onclick="calculate()">=</button>
                     </div>
                 </div>
             </div>
+        </div>
+         <div class="trigonometri" id="trigonometri">
+                    <div class="buttons" id="button-trigonometri">
+                        <button class="button-calculator" onclick="append('sin(')">Sin</button>
+                        <button class="button-calculator" onclick="append('cos(')">Cos</button>
+                        <button class="button-calculator" onclick="append('tan(')">Tan</button>
+                        <button class="button-calculator" onclick="append('^')">X²</button>
+                        <button class="button-calculator" onclick="append('(')">(</button>
+                        <button class="button-calculator" onclick="append(')')">)</button>
+                        <button class="button-calculator" onclick="append('√(')">√</button>
+                        <button class="button-calculator" onclick="append('π')">π</button>
+                    </div>
         </div>
     </div>
     

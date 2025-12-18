@@ -1,4 +1,5 @@
 /* Base styles */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -13,57 +14,72 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
+    /* justify-content: center; */
     min-height: 100vh;
     min-width: 100vw;
     padding: 20px;
     margin: 10px 0;
     transition: transform 0.5s ease;
 }
-
-.toolbar-toggle button{ /* Tombol setting di samping kiri kalkulator */
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #ccc;
-    border-radius: 15px;
+.toggle{
+    display: block;
+}
+.toolbar-toggle { 
     width: 50px;
     height: 50px;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em;
-    cursor: pointer;
-    position: absolute;
-    left: 10px;
+    background-color: rgba(255,255,255,0.9);
+    border: 2px solid #ccc;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    margin-right: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
     transition: transform 1s ease background-color 0.5s ease, border-color 0.5s ease;
 }
 .toolbar-toggle i{
     font-size: 1.4em;
 }
 .toolbar-toggle i.spin {
-    animation: rotateCog 0.6s ease;
+    animation: rotateCog 1.2s ease;
 }
 
 @keyframes rotateCog {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-
-#toolbar { /* Toolbar hidden di samping kiri */
+#togglehistory{
+    width: 50px;
+    height: 50px;
+    margin: 10px 0;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255,255,255,0.9);
+    border: 2px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 1s ease background-color 0.5s ease, border-color 0.5s ease;
+}
+#togglehistory i{
+    font-size: 1.4em;
+}
+#toolbar { 
     background-color: rgba(255, 255, 255, 0.9);
     border: 2px solid #ccc;
     border-radius: 15px;
     padding: 20px;
+    margin: 0 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    width: 200px;
+    width: 180px;
     display: flex;
     justify-content: center;
     overflow: hidden;
     flex-direction: column;
     gap: 10px;
-    position: absolute;
-    left: 70px;
     opacity: 0;
     visibility: hidden;
     transform: translateX(-10px);
@@ -75,7 +91,10 @@ body {
     transform: translateX(0);
     transition-delay: 0s; 
 }
-
+#toggleBtn{
+    background-color: #f0f0f0;
+    border: 2px solid #777;
+}
 
 .description {
     font-size: 0.9em;
@@ -116,9 +135,10 @@ body {
     border-radius: 15px;
     background-color: #fff;
     padding: 20px;
+    width: 47em;
+    max-width: 100em;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.5s ease;
-    max-width: 90vw;
     overflow: hidden;
 }
 
@@ -145,40 +165,70 @@ body {
 .container {
     display: flex;
     justify-content: space-between;
-    max-width: 800px;
+    /* max-width: 800px; */
     width: 100%;
     padding: 0 20px;
 }
 
 #history {
-    flex: 1;
-    margin-right: 20px;
     border: 2px solid #ddd;
     border-radius: 10px;
     background-color: #fafafa;
-    padding: 15px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-    transition: background-color 0.5s ease, border-color 0.5s ease;
+    height: 19em;
+    padding: 15px;
+    position: absolute;
+    max-width: 16em;
+    width: 15em;
+    left: 2em;
+    overflow: hidden;
+    transform: translateX(-40px);
+    opacity: 0;
+    transition:transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.3s ease;
+    transition-delay: 0.5;
+    will-change: transform, opacity;
 }
-
+#history.openhistory{
+    transform: translateX(0);
+    opacity: 1;
+}
+.flex-history{
+    display: flex;
+    align-items: center;
+}
+#historyList{
+    flex-wrap: wrap;
+    
+}
 #refreshBtn {
-    margin-left: 10px;
-    padding: 5px 10px;
-    font-size: 0.8em;
+    margin: 0 10px;
+    width: 30px;
+    height: 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #ff4444;
     color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
+#refreshBtn i {
+    color: white;
+    font-size: 1.2em;
+}
 #refreshBtn:hover {
     background-color: #cc0000;
 }
-
-.calculator {
+.trigonometri {
     flex: 1;
+    opacity: 0;
+    flex-wrap: wrap;
+    width: 8.6em;
+    position: absolute;
+    right: 2em;
+    top: 11em;
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
@@ -186,10 +236,40 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     transition: background-color 0.5s ease;
 }
+.trigonometri.opentrigonometri {
+    opacity: 1;
+}
+#button-trigonometri {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.calculator {
+    background-color: #fff;
+    width: 42.5em;
+    height: 19em;
+    border-radius: 10px;
+    padding: 20px;
+    transform-origin: right center;
+    transition:transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),box-shadow 0.3s ease;
+    transition-delay: 0;
+    will-change: transform;
+}
+.calculator.openhistory{
+     transform: scaleX(0.6);
 
+}
+.innercalculator {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+.innercalculator.openhistory {
+    transform: scaleX(1.67); 
+    transform-origin: left center;
+}
 .buttons {
     display: grid;
-
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
@@ -198,8 +278,10 @@ button {
     padding: 15px;
     font-size: 1.2em;
     border: none;
+    min-width: 3.3em;
     border-radius: 5px;
     cursor: pointer;
+    background-color: transparent;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -239,9 +321,16 @@ body.dark {
     color: #fff;
 }
 
-body.dark .toolbar-toggle button{
+body.dark .toolbar-toggle{
     background-color: rgba(68, 68, 68, 0.9);
     border-color: #666;
+}
+body.dark #togglehistory {
+    background-color: rgba(68, 68, 68, 0.9);
+    border-color: #666;
+}
+body.dark #togglehistory i{
+    color: #fff;   
 }
 body.dark .toolbar-toggle i{
  color: #fff;   
@@ -300,7 +389,10 @@ body.dark .button-calculator {
     background-color: #666;
     color: #fff;
 }
+body.dark .trigonometri{
+    background-color: #444;
 
+}
 body.dark .operator {
     background-color: #ff8c00;
 }
@@ -321,21 +413,3 @@ body.dark #history h3 {
     color: #fff;
 }
 
-/* Responsif */
-@media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .toolbar.open {
-        width: 90vw;
-        margin-bottom: 10px;
-    }
-    .toolbar-toggle {
-        margin-bottom: 10px;
-    }
-    .main-box {
-        max-width: 100vw;
-        max-height: 100vh;
-    }
-}

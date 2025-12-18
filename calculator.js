@@ -8,7 +8,10 @@ let toggleBtn = document.getElementById('toggleBtn');
 let sizeButtons = document.querySelectorAll('.size-btn');
 let toolbar = document.getElementById('toolbar');
 let toolbarToggle = document.getElementById('toolbarToggle');
-
+let togglehistory = document.getElementById('togglehistory');
+let history = document.getElementById('history');
+let mtrigonometri = document.getElementById('trigonometri');
+ 
 // Load preferences from localStorage
 let isDarkMode = localStorage.getItem('darkMode') === 'true';
 let currentScale = parseFloat(localStorage.getItem('calculatorScale')) || 1;
@@ -21,23 +24,6 @@ if (isDarkMode) {
     toggleBtn.textContent = 'Dark Mode';
 }
 mainBox.style.transform = `scale(${currentScale})`;
-// Highlight tombol aktif berdasarkan scale
-sizeButtons.forEach(btn => {
-    if (parseFloat(btn.dataset.scale) === currentScale) {
-        btn.classList.add('active');
-    }
-});
-
-// Toggle toolbar
-toolbarToggle.addEventListener('click', () => {
-    toolbar.classList.toggle('open');
-
-     // Putar ikon
-    const icon = toolbarToggle.querySelector('i');
-    icon.classList.remove('spin'); 
-    void icon.offsetWidth;         
-    icon.classList.add('spin');
-});
 
 // Toggle dark/light mode
 toggleBtn.addEventListener('click', () => {
@@ -45,6 +31,13 @@ toggleBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     toggleBtn.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
     localStorage.setItem('darkMode', isDarkMode);
+});
+
+// Highlight tombol aktif berdasarkan scale
+sizeButtons.forEach(btn => {
+    if (parseFloat(btn.dataset.scale) === currentScale) {
+        btn.classList.add('active');
+    }
 });
 
 // Adjust size with buttons
@@ -59,9 +52,73 @@ sizeButtons.forEach(btn => {
     }); 
 });
 
+// Toggle toolbar
+toolbarToggle.addEventListener('click', () => {
+    toolbar.classList.toggle('open');
+
+     // Putar ikon
+    const icon = toolbarToggle.querySelector('i');
+    icon.classList.remove('spin'); 
+    void icon.offsetWidth;         
+    icon.classList.add('spin');
+});
+togglehistory.addEventListener('click', () => {
+    history.classList.toggle('openhistory');
+    calculator.classList.toggle('openhistory');
+    innercalculator.classList.toggle('openhistory');
+})
+menutrigonometri.addEventListener('click', () => {
+    trigonometri.classList.toggle('opentrigonometri');
+    calculator.classList.toggle('opentrigonometri');
+});
+
+
 // Function to refresh history
 function refreshHistory() {
     historyList.innerHTML = '';
+}
+
+
+// Modified clearDisplay: Tidak clear history
+function clearDisplay() {
+    display.textContent = '0';
+    preview.textContent = '';
+}
+// limit number in display
+const MAX_DISPLAY_LENGTH = 10;
+
+// function to math simbol
+function degToRad(deg) {
+    return deg * Math.PI / 180;
+}
+function formatResult(num, maxDecimals = 8) {
+    if (!Number.isFinite(num)) return 'Error';
+
+    return num
+        .toFixed(maxDecimals)      
+        .replace(/\.?0+$/, '');
+}
+function toJSExpression(expr) {
+    return expr
+        .replace(/π/g, 'Math.PI')
+        .replace(/√\((.*?)\)/g, 'Math.sqrt($1)')
+        .replace(/sin\((.*?)\)/g, 'Math.sin(degToRad($1))')
+        .replace(/cos\((.*?)\)/g, 'Math.cos(degToRad($1))')
+        .replace(/tan\((.*?)\)/g, 'Math.tan(degToRad($1))')
+        .replace(/%/g, '/100')
+        .replace(/\^/g, '**')
+        .replace(/x/g, '*')
+        .replace(/÷/g, '/');
+}
+
+function isBalanced(expr) {
+    let count = 0;
+    for (let c of expr) {
+        if (c === '(') count++;
+        if (c === ')') count--;
+        if (count < 0) return false;
+    }
+    return count === 0;
 }
 
 // Function to backspace
@@ -77,13 +134,13 @@ function backspace() {
 // Function to update preview
 function updatePreview() {
     try {
-        let expression = display.textContent.replace('x', '*').replace('÷', '/');
-        if (expression && expression !== '0') {
-            let result = eval(expression);
-            preview.textContent = '= ' + result;
-        } else {
+        if (!isBalanced(display.textContent)) {
             preview.textContent = '';
+            return;
         }
+        let jsExpr = toJSExpression(display.textContent);
+        let result = eval(jsExpr);
+        preview.textContent = '= ' + formatResult(result);
     } catch {
         preview.textContent = '';
     }
@@ -91,27 +148,31 @@ function updatePreview() {
 
 // Modified append to update preview
 function append(value) {
+    const isFunction = /sin\(|cos\(|tan\(|√\(/.test(value);
+
+    if (!isFunction && display.textContent.length >= MAX_DISPLAY_LENGTH) return;
+
     if (display.textContent === '0') {
         display.textContent = value;
     } else {
         display.textContent += value;
     }
+
     updatePreview();
 }
-
-// Modified clearDisplay: Tidak clear history
-function clearDisplay() {
-    display.textContent = '0';
-    preview.textContent = '';
-}
-
 // Existing calculate function
 function calculate() {
     try {
-        let result = eval(display.textContent.replace('x', '*').replace('÷', '/'));
-        let calculation = display.textContent + ' = ' + result;
-        display.textContent = result;
+        let jsExpr = toJSExpression(display.textContent);
+        let result = eval(jsExpr);
+
+        let formatted = formatResult(result);
+
+        let calculation = display.textContent + ' = ' + formatted;
+
+        display.textContent = formatted;
         preview.textContent = '';
+
         let li = document.createElement('li');
         li.textContent = calculation;
         historyList.appendChild(li);
