@@ -7,25 +7,29 @@
     <link rel="stylesheet" href="calculator.css">
 </head>
 <body>
-    <div class="main-container" id="mainContainer">
-        <div class="toggle">
-            <button class="toolbar-toggle" id="toolbarToggle">
-                <i class='bx bx-cog'></i>
+    <div class="toggle">
+        <button class="toolbar-toggle" id="toolbarToggle">
+            <i class='bx bx-cog'></i>
             </button>
-
+            
             <button id="togglehistory">
                 <i class='bx bx-history'></i>
             </button>
         </div>
         <div class="toolbar" id="toolbar"> 
+            <button id="exitToolbar" class="exit-btn"><i class='bx bx-x'></i></button>
             <button id="toggleBtn">Light Mode</button>
+            <p class="size-desc">size calculator</p>
+            <hr width="100%">
             <div class="size-buttons">
-                <button class="size-btn" data-scale="1">1x</button>
-                <button class="size-btn" data-scale="1.07">1.2x</button>
-                <button class="size-btn" data-scale="1.12">1.3x</button>
+                <button class="size-btn" data-scale="1">1.0x</button>
+                <button class="size-btn" data-scale="1.04">1.2x</button>
+                <button class="size-btn" data-scale="1.08">1.3x</button>
+                <button class="size-btn" data-scale="1.12">1.4x</button>
+                <button class="size-btn" data-scale="1.16">1.5x</button>
             </div>
-            <p class="description">Hello everyone</p>
         </div>
+        <div class="main-container" id="mainContainer">
         <div class="main-box" id="mainBox">
             <div class="display">
                 <div class="display-number" id="display">0</div>

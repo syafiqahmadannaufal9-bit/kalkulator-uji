@@ -11,7 +11,8 @@ let toolbarToggle = document.getElementById('toolbarToggle');
 let togglehistory = document.getElementById('togglehistory');
 let history = document.getElementById('history');
 let mtrigonometri = document.getElementById('trigonometri');
- 
+let exittool = document.getElementById('exittoolbar');
+
 // Load preferences from localStorage
 let isDarkMode = localStorage.getItem('darkMode') === 'true';
 let currentScale = parseFloat(localStorage.getItem('calculatorScale')) || 1;
@@ -61,7 +62,16 @@ toolbarToggle.addEventListener('click', () => {
     icon.classList.remove('spin'); 
     void icon.offsetWidth;         
     icon.classList.add('spin');
+
 });
+
+// exit toolbar
+let exitToolbar = document.getElementById('exitToolbar');
+
+exitToolbar.addEventListener('click', () => {
+    toolbar.classList.remove('open');
+});
+
 togglehistory.addEventListener('click', () => {
     history.classList.toggle('openhistory');
     calculator.classList.toggle('openhistory');
@@ -84,6 +94,55 @@ function clearDisplay() {
     display.textContent = '0';
     preview.textContent = '';
 }
+
+document.addEventListener('keydown', (e) => {
+    const key = e.key;
+
+    // Angka
+    if (!isNaN(key)) {
+        append(key);
+        return;
+    }
+
+    // Operator dasar
+    if (['+', '-', '*', '/', '%'].includes(key)) {
+        append(key);
+        return;
+    }
+
+    // Titik desimal
+    if (key === '.') {
+        append('.');
+        return;
+    }
+
+    // Enter = Hitung
+    if (key === 'Enter' || key === '=') {
+        e.preventDefault();
+        calculate();
+        return;
+    }
+
+    // Backspace
+    if (key === 'Backspace') {
+        backspace();
+        return;
+    }
+
+    // Escape = Clear
+    if (key === 'Escape') {
+        clearDisplay();
+        return;
+    }
+
+    // Kurung
+    if (key === '(' || key === ')') {
+        append(key);
+        return;
+    }
+});
+
+
 // limit number in display
 const MAX_DISPLAY_LENGTH = 10;
 
@@ -120,7 +179,17 @@ function isBalanced(expr) {
     }
     return count === 0;
 }
+function toDisplaySymbol(value) {
+    return value
+        .replace(/\*/g, 'X')
+        .replace(/\//g, ':');
+}
 
+function toLogicSymbol(value) {
+    return value
+        .replace(/X/g, '*')
+        .replace(/:/g, '/');
+}
 // Function to backspace
 function backspace() {
     if (display.textContent.length > 1) {
@@ -138,7 +207,10 @@ function updatePreview() {
             preview.textContent = '';
             return;
         }
-        let jsExpr = toJSExpression(display.textContent);
+        let jsExpr = toJSExpression(
+            toLogicSymbol(display.textContent)
+        );
+
         let result = eval(jsExpr);
         preview.textContent = '= ' + formatResult(result);
     } catch {
@@ -149,8 +221,9 @@ function updatePreview() {
 // Modified append to update preview
 function append(value) {
     const isFunction = /sin\(|cos\(|tan\(|√\(/.test(value);
-
     if (!isFunction && display.textContent.length >= MAX_DISPLAY_LENGTH) return;
+
+    value = toDisplaySymbol(value);
 
     if (display.textContent === '0') {
         display.textContent = value;
@@ -160,10 +233,12 @@ function append(value) {
 
     updatePreview();
 }
+
 // Existing calculate function
 function calculate() {
     try {
-        let jsExpr = toJSExpression(display.textContent);
+        let logicExpr = toLogicSymbol(display.textContent);
+            let jsExpr = toJSExpression(logicExpr);
         let result = eval(jsExpr);
 
         let formatted = formatResult(result);

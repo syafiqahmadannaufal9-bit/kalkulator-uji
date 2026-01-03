@@ -14,7 +14,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    /* justify-content: center; */
+    justify-content: center;
     min-height: 100vh;
     min-width: 100vw;
     padding: 20px;
@@ -23,9 +23,17 @@ body {
 }
 .toggle{
     display: block;
+    position: absolute;
+    left: 10px;
 }
 .toolbar-toggle { 
-    width: 50px;
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    width:60px;
     height: 50px;
     border-radius: 15px;
     display: flex;
@@ -50,9 +58,15 @@ body {
     to { transform: rotate(360deg); }
 }
 #togglehistory{
-    width: 50px;
+    margin: 10px 0 0 0;
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    width:60px;
     height: 50px;
-    margin: 10px 0;
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -67,45 +81,65 @@ body {
 #togglehistory i{
     font-size: 1.4em;
 }
-#toolbar { 
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #ccc;
-    border-radius: 15px;
-    padding: 20px;
-    margin: 0 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    width: 180px;
+#toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
     display: flex;
-    justify-content: center;
-    overflow: hidden;
     flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-10px);
-    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0.4s;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 60px 20px 20px;
+    background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
+    border-right: 2px solid #ccc;
+    z-index: 99;
+    transform: translateX(-300px);
+    transition: opacity 0.5s ease, transform 0.4s ease, visibility 0s linear 0.4s;
 }
+
 #toolbar.open{
-     opacity: 1;
-    visibility: visible;
     transform: translateX(0);
     transition-delay: 0s; 
 }
-#toggleBtn{
+.exit-btn{
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    top: 1px;
+    right: 1px;
+    position: absolute;
+}
+.exit-btn i{
+    color: #555;
+    font-size: 2em;
+}
+#toggleBtn {
+    height: 45px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    height: 40px;
     background-color: #f0f0f0;
     border: 2px solid #777;
 }
 
-.description {
-    font-size: 0.9em;
-    color: #555;
+.size-desc{
     margin: 0;
-    line-height: 1.4;
 }
-
 .size-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 5px;
 }
 
@@ -116,7 +150,7 @@ body {
     border-radius: 5px;
     background-color: #e0e0e0;
     cursor: pointer;
-    width: 70px;
+    width: 60px;
     transition: background-color 0.3s ease;
 }
 
@@ -201,9 +235,14 @@ body {
     
 }
 #refreshBtn {
+    padding: 15px;
+    font-size: 1.2em;
+    height: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
     margin: 0 10px;
-    width: 30px;
-    height: 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #ff4444;
@@ -222,22 +261,26 @@ body {
     background-color: #cc0000;
 }
 .trigonometri {
-    flex: 1;
-    opacity: 0;
-    flex-wrap: wrap;
-    width: 8.6em;
     position: absolute;
-    right: 2em;
+    right: 3.5em;
     top: 11em;
+    width: 8.8em;
+    padding: 18px;
     background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 0 30px 0 0;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    transition: background-color 0.5s ease;
+    border-radius: 12px;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translateX(-60px) scale(0.85);
+    clip-path: inset(0 0 0 100%);
+    pointer-events: none;
+    transition:transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 .trigonometri.opentrigonometri {
     opacity: 1;
+    transform: translateX(0) scale(1);
+    clip-path: inset(0 0 0 0);
+    pointer-events: auto;
 }
 #button-trigonometri {
     display: flex;
@@ -266,6 +309,7 @@ body {
 }
 .innercalculator.openhistory {
     transform: scaleX(1.67); 
+    transform: scaleX(1.67); 
     transform-origin: left center;
 }
 .buttons {
@@ -274,7 +318,9 @@ body {
     gap: 10px;
 }
 
-button {
+
+
+.button-calculator {
     padding: 15px;
     font-size: 1.2em;
     border: none;
@@ -283,24 +329,45 @@ button {
     cursor: pointer;
     background-color: transparent;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.button-calculator {
     background-color: #e0e0e0;
     color: #333;
 }
 
 .operator {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    min-width: 3.3em;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
     background-color: #ffa500;
     color: #fff;
 }
 
 .C {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    min-width: 3.3em;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
     background-color: #ff4444;
     color: #fff;
 }
 
 .backspace {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    min-width: 3.3em;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
     background-color: #666;
     color: #fff;
 }
@@ -339,6 +406,10 @@ body.dark .toolbar-toggle i{
 body.dark #toolbar {
     background-color: rgba(68, 68, 68, 0.9);
     border-color: #666;
+}
+body.dark #exittoolbar {
+    color: #fff;   
+
 }
 
 body.dark .size-btn {
