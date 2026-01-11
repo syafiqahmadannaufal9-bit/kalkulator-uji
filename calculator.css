@@ -309,7 +309,6 @@ body {
 }
 .innercalculator.openhistory {
     transform: scaleX(1.67); 
-    transform: scaleX(1.67); 
     transform-origin: left center;
 }
 .buttons {

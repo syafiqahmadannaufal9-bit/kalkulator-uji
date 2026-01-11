@@ -11,7 +11,8 @@ let toolbarToggle = document.getElementById('toolbarToggle');
 let togglehistory = document.getElementById('togglehistory');
 let history = document.getElementById('history');
 let mtrigonometri = document.getElementById('trigonometri');
-let exittool = document.getElementById('exittoolbar');
+let exitToolbar = document.getElementById('exitToolbar');
+// let exittool = document.getElementById('exittoolbar');
 
 // Load preferences from localStorage
 let isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -64,24 +65,23 @@ toolbarToggle.addEventListener('click', () => {
     icon.classList.add('spin');
 
 });
-
-// exit toolbar
-let exitToolbar = document.getElementById('exitToolbar');
-
 exitToolbar.addEventListener('click', () => {
     toolbar.classList.remove('open');
 });
 
-togglehistory.addEventListener('click', () => {
-    history.classList.toggle('openhistory');
-    calculator.classList.toggle('openhistory');
-    innercalculator.classList.toggle('openhistory');
-})
+
+// toggle menu trigonometri
 menutrigonometri.addEventListener('click', () => {
     trigonometri.classList.toggle('opentrigonometri');
     calculator.classList.toggle('opentrigonometri');
 });
 
+// toggle history
+togglehistory.addEventListener('click', () => {
+    history.classList.toggle('openhistory');
+    calculator.classList.toggle('openhistory');
+    innercalculator.classList.toggle('openhistory');
+})
 
 // Function to refresh history
 function refreshHistory() {
@@ -89,12 +89,13 @@ function refreshHistory() {
 }
 
 
-// Modified clearDisplay: Tidak clear history
+// display number
 function clearDisplay() {
     display.textContent = '0';
     preview.textContent = '';
 }
 
+// keyboard function
 document.addEventListener('keydown', (e) => {
     const key = e.key;
 
@@ -146,12 +147,12 @@ document.addEventListener('keydown', (e) => {
 // limit number in display
 const MAX_DISPLAY_LENGTH = 10;
 
-// function to math simbol
+// function to math symbol
 function degToRad(deg) {
     return deg * Math.PI / 180;
 }
 function formatResult(num, maxDecimals = 8) {
-    if (!Number.isFinite(num)) return 'Error';
+    if (!Number.isFinite(num)) return 'tak terdefinisi';
 
     return num
         .toFixed(maxDecimals)      
@@ -181,15 +182,16 @@ function isBalanced(expr) {
 }
 function toDisplaySymbol(value) {
     return value
-        .replace(/\*/g, 'X')
+        .replace(/\*/g, 'x')
         .replace(/\//g, ':');
 }
 
 function toLogicSymbol(value) {
     return value
-        .replace(/X/g, '*')
+        .replace(/x/g, '*')
         .replace(/:/g, '/');
 }
+
 // Function to backspace
 function backspace() {
     if (display.textContent.length > 1) {
@@ -225,7 +227,8 @@ function append(value) {
 
     value = toDisplaySymbol(value);
 
-    if (display.textContent === '0') {
+    const isAppendingSymbol = ['+', '-', 'X', ':', '%', '.'].includes(value);
+    if (display.textContent === '0'  && !isAppendingSymbol) {
         display.textContent = value;
     } else {
         display.textContent += value;
@@ -237,7 +240,9 @@ function append(value) {
 // Existing calculate function
 function calculate() {
     try {
-        let logicExpr = toLogicSymbol(display.textContent);
+        let logicExpr 
+        
+        = toLogicSymbol(display.textContent);
             let jsExpr = toJSExpression(logicExpr);
         let result = eval(jsExpr);
 
@@ -252,7 +257,7 @@ function calculate() {
         li.textContent = calculation;
         historyList.appendChild(li);
     } catch {
-        display.textContent = 'Error';
+        display.textContent = 'error';
         preview.textContent = '';
     }
 }
