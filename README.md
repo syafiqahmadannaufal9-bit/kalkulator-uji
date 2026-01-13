@@ -31,4 +31,4 @@ berikut adalah list function dari atas file kebawah
 -trigonometri calculate system
 -calculation calculator system
 
-belum ada bug yang ditemukan sejauh ini.
+sejauh ini semua bug yang ditemukan telah diperbaiki

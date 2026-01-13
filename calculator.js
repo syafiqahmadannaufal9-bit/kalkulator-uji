@@ -145,7 +145,7 @@ document.addEventListener('keydown', (e) => {
 
 
 // limit number in display
-const MAX_DISPLAY_LENGTH = 10;
+const MAX_DISPLAY_LENGTH = 20;
 
 // function to math symbol
 function degToRad(deg) {
@@ -220,15 +220,29 @@ function updatePreview() {
     }
 }
 
-// Modified append to update preview
-function append(value) {
-    const isFunction = /sin\(|cos\(|tan\(|√\(/.test(value);
-    if (!isFunction && display.textContent.length >= MAX_DISPLAY_LENGTH) return;
+function isOperator(char) {
+    return ['+', '-', 'x', ':', '%'].includes(char);
+}
 
+// append to update preview
+function append(value) {
     value = toDisplaySymbol(value);
 
-    const isAppendingSymbol = ['+', '-', 'X', ':', '%', '.'].includes(value);
-    if (display.textContent === '0'  && !isAppendingSymbol) {
+    const current = display.textContent;
+    const lastChar = current.slice(-1);
+    const isOp = isOperator(value);
+
+    if (current === '0' && isOp && value !== '-') return;
+
+    if (isOp && isOperator(lastChar)) return;
+
+    if (value === '.') {
+        const parts = current.split(/[\+\-x:%]/);
+        if (parts[parts.length - 1].includes('.')) return;
+    }
+
+    // Replace 0 awal
+    if (current === '0' && !isOp && value !== '.') {
         display.textContent = value;
     } else {
         display.textContent += value;
@@ -236,6 +250,7 @@ function append(value) {
 
     updatePreview();
 }
+
 
 // Existing calculate function
 function calculate() {
